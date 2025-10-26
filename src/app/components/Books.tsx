@@ -235,7 +235,7 @@ const FeaturedBookCard = ({ book }: { book: BookProps }) => (
         {book.pullQuote && (
           <blockquote className="border-l-2 border-slate-300 pl-6 py-4 my-6">
             <p className="text-lg font-medium text-slate-700 italic leading-relaxed">
-              "{book.pullQuote}"
+              &ldquo;{book.pullQuote}&rdquo;
             </p>
             {book.quoteSource && (
               <cite className="text-sm text-slate-600 font-light mt-2 block">

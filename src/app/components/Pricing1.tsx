@@ -186,7 +186,7 @@ export const Pricing1Defaults: Props = {
   tagline: "Personal Consultation",
   heading: "Get Tailored Economic Insights from Professor Werner",
   description:
-    "Whether you're researching monetary policy, developing an economic model, or exploring practical financial systems, a one-on-one session provides personal guidance and real-world context from decades of experience.",
+    "Whether you&apos;re researching monetary policy, developing an economic model, or exploring practical financial systems, a one-on-one session provides personal guidance and real-world context from decades of experience.",
   audienceText:
     "Ideal for students, researchers, policy professionals, and anyone seeking deeper understanding of monetary economics.",
   pricingPlan: {

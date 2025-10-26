@@ -73,9 +73,9 @@ export const Contacts = (props: ContactsProps) => {
                 Get in Touch
               </h3>
               <p className="text-slate-600 font-light leading-relaxed mb-8">
-                Whether you're interested in academic collaboration, media
-                inquiries, or have questions about economic research, I'd be
-                happy to hear from you.
+                Whether you&apos;re interested in academic collaboration, media
+                inquiries, or have questions about economic research, I&apos;d
+                be happy to hear from you.
               </p>
             </div>
 
@@ -238,7 +238,7 @@ const ContactForm = ({ formFields }: { formFields: Props["formFields"] }) => {
           {formFields.submitButton.title}
         </Button>
         <p className="text-sm text-slate-500 font-light mt-3 text-center">
-          I'll respond to your message within 24-48 hours.
+          I&apos;ll respond to your message within 24-48 hours.
         </p>
       </div>
     </form>
@@ -249,7 +249,7 @@ export const ContactsDefaults: Props = {
   tagline: "Get in Touch",
   heading: "Connect with Professor Werner",
   description:
-    "I welcome inquiries from researchers, students, media, and policymakers interested in monetary economics, banking systems, and economic reform. Let's start a conversation about the future of finance.",
+    "I welcome inquiries from researchers, students, media, and policymakers interested in monetary economics, banking systems, and economic reform. Let&apos;s start a conversation about the future of finance.",
   contactInfo: [
     {
       label: "Email",

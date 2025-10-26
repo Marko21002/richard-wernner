@@ -161,7 +161,7 @@ const FeaturedProject: React.FC<ProjectProps> = ({
         {quote && (
           <blockquote className="border-l-2 border-slate-300 pl-6 py-4 mb-6">
             <p className="text-lg font-medium text-slate-700 italic leading-relaxed">
-              "{quote}"
+              &ldquo;{quote}&rdquo;
             </p>
           </blockquote>
         )}
@@ -285,98 +285,7 @@ const bbcDocumentary = {
   ],
 };
 
-const realVisionInterview = {
-  title: "Rethinking Central Banking",
-  description:
-    "An in-depth conversation with Real Vision exploring alternative approaches to central banking and monetary policy. Professor Werner discusses sustainable finance and the future of economic systems.",
-  image: {
-    src: "/proffesor.jpg",
-    alt: "Professor Werner Real Vision Interview",
-  },
-  url: "#",
-  button: {
-    title: "Watch Interview",
-    variant: "link" as const,
-    size: "link" as const,
-    iconRight: <RxChevronRight />,
-  },
-  tags: [
-    {
-      label: "Real Vision",
-      url: "#",
-    },
-    {
-      label: "Central Banking",
-      url: "#",
-    },
-    {
-      label: "Policy",
-      url: "#",
-    },
-  ],
-};
-
-const mmtTalk = {
-  title: "How Banks Actually Work",
-  description:
-    "A comprehensive talk on Modern Monetary Theory and the practical mechanics of banking systems. Professor Werner breaks down complex economic concepts into accessible insights for policymakers and the public.",
-  image: {
-    src: "/proffesor.jpg",
-    alt: "Professor Werner MMT Talk",
-  },
-  url: "#",
-  button: {
-    title: "Watch Talk",
-    variant: "link" as const,
-    size: "link" as const,
-    iconRight: <RxChevronRight />,
-  },
-  tags: [
-    {
-      label: "Modern Monetary Theory",
-      url: "#",
-    },
-    {
-      label: "Banking Systems",
-      url: "#",
-    },
-    {
-      label: "Economics",
-      url: "#",
-    },
-  ],
-};
-
-const oxfordPanel = {
-  title: "The Future of Sustainable Finance",
-  description:
-    "Panel discussion at Oxford examining how financial systems can support sustainable development and environmental goals. Features Professor Werner's insights on reforming banking for a more sustainable future.",
-  image: {
-    src: "/proffesor.jpg",
-    alt: "Professor Werner Oxford Panel Discussion",
-  },
-  url: "#",
-  button: {
-    title: "View Panel",
-    variant: "link" as const,
-    size: "link" as const,
-    iconRight: <RxChevronRight />,
-  },
-  tags: [
-    {
-      label: "Oxford University",
-      url: "#",
-    },
-    {
-      label: "Sustainable Finance",
-      url: "#",
-    },
-    {
-      label: "Panel Discussion",
-      url: "#",
-    },
-  ],
-};
+// Unused legacy data objects removed
 
 export const Portfolio16Defaults: Props = {
   tagline: "Featured Media",

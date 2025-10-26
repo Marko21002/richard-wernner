@@ -86,10 +86,10 @@ export const Substack = (props: SubstackProps) => {
             </div>
           </div>
 
-          {/* What You'll Get Preview */}
+          {/* What You Get Preview */}
           <div className="mb-10 max-w-2xl mx-auto">
             <h3 className="text-lg font-medium text-slate-800 text-center mb-6">
-              What You'll Get
+              What You Get
             </h3>
             <div className="space-y-3">
               {benefits.map((benefit, index) => (

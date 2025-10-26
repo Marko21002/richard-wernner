@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Navbar2 } from "./components/Navbar2";
 import { Layout25 } from "./components/Layout25";

@@ -28,7 +28,6 @@ export const Cta1 = (props: Cta1Props) => {
     heading,
     description,
     subscriberCount,
-    socialProof,
     socialProofBadges,
     buttons,
     image,
