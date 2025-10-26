@@ -8,6 +8,7 @@ import { Cta1 } from "./components/cta1";
 
 import { Pricing1 } from "./components/Pricing1";
 import { Books } from "./components/Books";
+import { Contacts } from "./components/contacts";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Cta1 />
       <Pricing1 />
       <Books />
+      <Contacts />
     </div>
   );
 }
