@@ -303,33 +303,36 @@ export const Portfolio16Defaults: Props = {
   },
   previewCards: [
     {
-      title: "Rethinking Central Banking",
+      title: "The Inflation Lie",
       summary:
-        "An in-depth conversation exploring alternative approaches to central banking and sustainable finance.",
+        "Professor Werner exposes misconceptions about inflation and reveals how monetary policy really affects prices and economic stability.",
       image: {
-        src: "/proffesor.jpg",
-        alt: "Professor Werner Real Vision Interview",
+        src: "/speak1.jpg",
+        alt: "Professor Werner presenting on inflation",
       },
       url: "#",
-      type: "Interview",
+      type: "Lecture",
       date: "March 2024",
     },
     {
-      title: "How Banks Actually Work",
+      title: "Banking System Collapse",
       summary:
-        "A comprehensive talk on Modern Monetary Theory and the practical mechanics of banking systems.",
-      image: { src: "/proffesor.jpg", alt: "Professor Werner MMT Talk" },
+        "A revealing discussion about banking vulnerabilities and the systemic risks within modern financial institutions.",
+      image: { src: "/speak2.jpg", alt: "Banking system discussion" },
       url: "#",
-      type: "Lecture",
+      type: "Interview",
       date: "February 2024",
     },
     {
-      title: "Future of Sustainable Finance",
+      title: "Marc Richard in Conversation",
       summary:
-        "Panel discussion at Oxford examining how financial systems can support environmental goals.",
-      image: { src: "/proffesor.jpg", alt: "Professor Werner Oxford Panel" },
+        "An engaging dialogue between Marc Richard and Professor Werner exploring contemporary economic challenges and solutions.",
+      image: {
+        src: "/speak3.jpg",
+        alt: "Marc Richard speaking with Professor Werner",
+      },
       url: "#",
-      type: "Panel",
+      type: "Interview",
       date: "January 2024",
     },
   ],

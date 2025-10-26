@@ -11,7 +11,7 @@ import { Cta1 } from "./components/cta1";
 import { Pricing1 } from "./components/Pricing1";
 import { Books } from "./components/Books";
 import { Contacts } from "./components/contacts";
-
+import { Newsletter } from "./components/Newsletter";
 export default function Home() {
   return (
     <div>
@@ -21,6 +21,7 @@ export default function Home() {
       <Portfolio16 />
       <Substack />
       <Cta1 />
+      <Newsletter />
       <Pricing1 />
       <Books />
       <Contacts />
