@@ -12,6 +12,8 @@ import { Pricing1 } from "./components/Pricing1";
 import { Books } from "./components/Books";
 import { Contacts } from "./components/contacts";
 import { Newsletter } from "./components/Newsletter";
+import { Events } from "./components/Events";
+import { Testimonials } from "./components/Testimonials";
 export default function Home() {
   return (
     <div>
@@ -21,6 +23,7 @@ export default function Home() {
       <Portfolio16 />
       <Substack />
       <Cta1 />
+      <Events />
       <Newsletter />
       <Pricing1 />
       <Books />
