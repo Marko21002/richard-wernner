@@ -142,7 +142,7 @@ export const Layout25Defaults: Props = {
     variant: "link" as const,
   },
   image: {
-    src: "/proffesor.jpg",
-    alt: "Professor Richard A. Werner",
+    src: "/economy.jpg",
+    alt: "European Currency - Economics and Banking",
   },
 };

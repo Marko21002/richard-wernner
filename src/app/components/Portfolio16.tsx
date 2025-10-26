@@ -178,6 +178,8 @@ const FeaturedProject: React.FC<ProjectProps> = ({
                     ? "bg-blue-100 text-blue-800"
                     : tag.label.includes("Real Vision")
                     ? "bg-purple-100 text-purple-800"
+                    : tag.label.includes("Tucker Carlson")
+                    ? "bg-red-100 text-red-800"
                     : "bg-slate-100 text-slate-700"
                 }`}
               >
@@ -254,24 +256,24 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
   </article>
 );
 
-const bbcDocumentary = {
-  title: "The Real Story Behind Money Creation",
+const tuckerCarlsonInterview = {
+  title: "How to Create Money from Nothing",
   description:
-    "Professor Werner explains how banks actually create money and the implications for the economy. This comprehensive BBC documentary explores the mechanics of monetary policy and its real-world effects on society.",
+    "Professor Werner appears on The Tucker Carlson Show to explain how banks actually create money and the implications for the economy. This revealing conversation explores the mechanics of monetary policy and its real-world effects on society.",
   image: {
-    src: "/proffesor.jpg",
-    alt: "Professor Werner in BBC Documentary",
+    src: "/takker.jpg",
+    alt: "Professor Werner on The Tucker Carlson Show",
   },
   url: "#",
   button: {
-    title: "Watch Documentary",
+    title: "Watch Interview",
     variant: "link" as const,
     size: "link" as const,
     iconRight: <RxChevronRight />,
   },
   tags: [
     {
-      label: "BBC Documentary",
+      label: "Tucker Carlson Show",
       url: "#",
     },
     {
@@ -293,10 +295,10 @@ export const Portfolio16Defaults: Props = {
   description:
     "Through interviews, podcasts, and documentaries, Professor Werner explores how money creation, banking, and public policy affect our everyday lives. These conversations turn complex ideas into accessible insights for anyone interested in understanding how modern economies really work.",
   featuredProject: {
-    ...bbcDocumentary,
+    ...tuckerCarlsonInterview,
     quote:
       "Banks don't lend existing money — they create it. This realization changes everything about how we understand the economy.",
-    metadata: "BBC · 2024 · 1M+ views",
+    metadata: "Tucker Carlson Show · 2024 · 1M+ views",
     isVideo: true,
   },
   previewCards: [
