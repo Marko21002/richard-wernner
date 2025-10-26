@@ -7,6 +7,8 @@ import { Substack } from "./components/Substack";
 import { Cta1 } from "./components/cta1";
 
 import { Pricing1 } from "./components/Pricing1";
+import { Books } from "./components/Books";
+
 export default function Home() {
   return (
     <div>
@@ -17,6 +19,7 @@ export default function Home() {
       <Substack />
       <Cta1 />
       <Pricing1 />
+      <Books />
     </div>
   );
 }

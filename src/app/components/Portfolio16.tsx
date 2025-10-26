@@ -36,7 +36,7 @@ export type Portfolio16Props = React.ComponentPropsWithoutRef<"section"> &
   Partial<Props>;
 
 export const Portfolio16 = (props: Portfolio16Props) => {
-  const { tagline, heading, description, projects, button } = {
+  const { tagline, heading, description, projects } = {
     ...Portfolio16Defaults,
     ...props,
   };
