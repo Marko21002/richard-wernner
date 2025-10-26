@@ -93,7 +93,7 @@ export const Pricing1 = (props: Pricing1Props) => {
             {/* Testimonial */}
             <div className="bg-white/90 border border-slate-200 rounded-sm p-6 shadow-sm">
               <blockquote className="text-slate-700 italic leading-relaxed mb-4">
-                "{testimonial.quote}"
+                &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
               <cite className="text-sm text-slate-600 font-medium">
                 — {testimonial.author}
@@ -110,7 +110,7 @@ const ValueContent = ({ plan }: { plan: PricingPlan }) => (
   <div className="space-y-6">
     <div>
       <h3 className="text-2xl font-light text-slate-800 font-serif mb-6 md:text-3xl">
-        What's Included
+        What&apos;s Included
       </h3>
       <div className="space-y-4">
         {plan.features.map((feature, index) => (
