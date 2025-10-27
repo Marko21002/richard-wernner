@@ -121,10 +121,10 @@ const FeaturedProject: React.FC<ProjectProps> = ({
 }) => (
   <article className="grid grid-cols-1 items-center gap-x-16 gap-y-8 py-12 md:grid-cols-2 md:gap-y-0 lg:gap-x-24 lg:py-16">
     <div className="relative group">
-      <a href={url} className="flex aspect-[4/3] w-full">
+      <a href={url} className="block w-full">
         <img
           src={image.src}
-          className="w-full object-cover rounded-sm shadow-xl group-hover:shadow-2xl transition-shadow duration-300"
+          className="w-full h-auto rounded-sm shadow-xl group-hover:shadow-2xl transition-shadow duration-300"
           alt={image.alt}
         />
         {/* Play Icon Overlay */}
@@ -224,10 +224,10 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 }) => (
   <article className="group cursor-pointer">
     <a href={url} className="block space-y-4">
-      <div className="relative aspect-[16/9] overflow-hidden rounded-sm shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+      <div className="relative overflow-hidden rounded-sm shadow-lg group-hover:shadow-xl transition-shadow duration-300">
         <img
           src={image.src}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-auto group-hover:scale-105 transition-transform duration-300"
           alt={image.alt}
         />
         <div className="absolute top-3 left-3">

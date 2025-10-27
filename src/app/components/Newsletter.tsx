@@ -49,19 +49,19 @@ export const Newsletter = (props: NewsletterProps) => {
   return (
     <section
       id="newsletter"
-      className="px-[5%] py-20 md:py-32 lg:py-40 bg-gradient-to-br from-slate-50/50 to-white"
+      className="px-[5%] py-20 md:py-32 lg:py-40 bg-slate-800"
     >
       <div className="container max-w-4xl mx-auto text-center">
         <div className="space-y-8">
           {/* Header */}
           <div className="space-y-6">
-            <p className="text-sm font-medium text-slate-600 tracking-wide uppercase">
+            <p className="text-sm font-medium text-slate-400 tracking-wide uppercase">
               {tagline}
             </p>
-            <h2 className="text-4xl font-light text-slate-800 leading-tight tracking-tight font-serif md:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-light text-white leading-tight tracking-tight font-serif md:text-5xl lg:text-6xl">
               {heading}
             </h2>
-            <p className="text-lg leading-relaxed text-slate-600 font-light max-w-2xl mx-auto md:text-xl">
+            <p className="text-lg leading-relaxed text-slate-300 font-light max-w-2xl mx-auto md:text-xl">
               {description}
             </p>
           </div>
@@ -75,7 +75,7 @@ export const Newsletter = (props: NewsletterProps) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={inputPlaceholder}
-                  className="flex-1 px-4 py-3 border border-slate-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-all duration-200 text-slate-800"
+                  className="flex-1 px-4 py-3 bg-slate-700 border border-slate-600 rounded-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition-all duration-200 text-white placeholder-slate-400"
                   required
                 />
                 <Button
@@ -85,7 +85,7 @@ export const Newsletter = (props: NewsletterProps) => {
                   className={`px-8 py-3 text-sm font-medium tracking-wide transition-all duration-300 transform hover:scale-105 ${
                     isSubmitted
                       ? "bg-green-600 text-white"
-                      : "bg-slate-800 text-white hover:bg-slate-700 border-slate-800 shadow-lg hover:shadow-xl"
+                      : "bg-white text-slate-800 hover:bg-slate-100 border-white shadow-lg hover:shadow-xl"
                   }`}
                 >
                   {isSubmitted ? "✓ Subscribed!" : button.title}
@@ -93,7 +93,7 @@ export const Newsletter = (props: NewsletterProps) => {
               </div>
 
               {/* Terms */}
-              <p className="text-xs text-slate-500 font-light leading-relaxed">
+              <p className="text-xs text-slate-400 font-light leading-relaxed">
                 {termsText}
               </p>
             </form>
@@ -102,26 +102,26 @@ export const Newsletter = (props: NewsletterProps) => {
           {/* Social Proof */}
           {socialProof && (
             <div className="pt-6">
-              <p className="text-sm text-slate-600 font-light">{socialProof}</p>
+              <p className="text-sm text-slate-300 font-light">{socialProof}</p>
             </div>
           )}
 
           {/* Visual Enhancement */}
           <div className="flex justify-center items-center gap-8 pt-8 opacity-60">
-            <div className="w-16 h-px bg-slate-300"></div>
+            <div className="w-16 h-px bg-slate-600"></div>
             <div className="flex items-center gap-2">
               <svg
-                className="w-5 h-5 text-slate-400"
+                className="w-5 h-5 text-slate-500"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
               </svg>
-              <span className="text-sm text-slate-400 font-light">
+              <span className="text-sm text-slate-500 font-light">
                 Monthly insights
               </span>
             </div>
-            <div className="w-16 h-px bg-slate-300"></div>
+            <div className="w-16 h-px bg-slate-600"></div>
           </div>
         </div>
       </div>

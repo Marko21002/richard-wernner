@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, useMediaQuery } from "@relume_io/relume-ui";
 import type { ButtonProps } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
@@ -35,6 +35,20 @@ export const Navbar2 = (props: Navbar2Props) => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 991px)");
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen, isMobile]);
 
   return (
     <section
@@ -93,16 +107,22 @@ export const Navbar2 = (props: Navbar2Props) => {
           initial="close"
           exit="close"
           transition={{ duration: 0.4 }}
-          className="overflow-hidden px-[5%] text-center lg:flex lg:items-center lg:justify-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
+          className="overflow-hidden px-[5%] text-center bg-slate-50/95 backdrop-blur-sm lg:flex lg:items-center lg:justify-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto] lg:bg-transparent lg:backdrop-blur-none"
         >
           {navLinks.map((navLink, index) =>
             navLink.subMenuLinks && navLink.subMenuLinks.length > 0 ? (
-              <SubMenu key={index} navLink={navLink} isMobile={isMobile} />
+              <SubMenu
+                key={index}
+                navLink={navLink}
+                isMobile={isMobile}
+                onMobileLinkClick={() => isMobile && setIsMobileMenuOpen(false)}
+              />
             ) : (
               <a
                 key={index}
                 href={navLink.url}
                 className="block py-3 text-md font-light text-slate-700 hover:text-slate-900 transition-colors duration-200 first:pt-7 lg:px-4 lg:py-2 lg:text-base first:lg:pt-2"
+                onClick={() => isMobile && setIsMobileMenuOpen(false)}
               >
                 {navLink.title}
               </a>
@@ -128,9 +148,11 @@ export const Navbar2 = (props: Navbar2Props) => {
 const SubMenu = ({
   navLink,
   isMobile,
+  onMobileLinkClick,
 }: {
   navLink: NavLink;
   isMobile: boolean;
+  onMobileLinkClick?: () => void;
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -174,13 +196,14 @@ const SubMenu = ({
               },
             }}
             transition={{ duration: 0.2 }}
-            className="bg-slate-50/95 backdrop-blur-sm lg:absolute lg:z-50 lg:border lg:border-slate-200 lg:p-2 lg:rounded-sm lg:shadow-lg lg:[--y-close:25%]"
+            className="bg-slate-50/95 backdrop-blur-sm lg:absolute lg:z-[1000] lg:border lg:border-slate-200 lg:p-2 lg:rounded-sm lg:shadow-lg lg:[--y-close:25%]"
           >
             {navLink.subMenuLinks?.map((subMenuLink, index) => (
               <a
                 key={index}
                 href={subMenuLink.url}
                 className="block py-3 text-center text-slate-700 hover:text-slate-900 font-light transition-colors duration-200 lg:px-4 lg:py-2 lg:text-left lg:hover:bg-slate-100/50 lg:rounded-sm"
+                onClick={onMobileLinkClick}
               >
                 {subMenuLink.title}
               </a>

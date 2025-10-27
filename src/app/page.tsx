@@ -13,7 +13,8 @@ import { Books } from "./components/Books";
 import { Contacts } from "./components/contacts";
 import { Newsletter } from "./components/Newsletter";
 import { Events } from "./components/Events";
-import { Testimonials } from "./components/Testimonials";
+import { Footer } from "./components/Footer";
+import { Course } from "./components/Course";
 export default function Home() {
   return (
     <div>
@@ -25,9 +26,11 @@ export default function Home() {
       <Cta1 />
       <Events />
       <Newsletter />
+      <Course />
       <Pricing1 />
       <Books />
       <Contacts />
+      <Footer />
     </div>
   );
 }
