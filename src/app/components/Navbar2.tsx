@@ -57,8 +57,15 @@ export const Navbar2 = (props: Navbar2Props) => {
     >
       <div className="mx-auto size-full lg:grid lg:grid-cols-[0.375fr_1fr_0.375fr] lg:items-center lg:justify-between lg:gap-4">
         <div className="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0">
-          <a href={logo.url}>
-            <img src={logo.src} alt={logo.alt} />
+          <a
+            href="/"
+            className="text-slate-900 text-lg font-semibold uppercase tracking-[0.24em] font-serif"
+          >
+            {logo.src ? (
+              <img src={logo.src} alt={logo.alt} className="max-h-10" />
+            ) : (
+              "R.W ACADEMY"
+            )}
           </a>
           <div className="flex items-center gap-4 lg:hidden">
             <div>
@@ -218,8 +225,8 @@ const SubMenu = ({
 export const Navbar2Defaults: Props = {
   logo: {
     url: "#",
-    src: "https://d22po4pjz3o32e.cloudfront.net/logo-image.svg",
-    alt: "Academic Logo",
+    src: "",
+    alt: "R.W Academy",
   },
   navLinks: [
     { title: "Research", url: "#research" },

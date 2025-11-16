@@ -35,7 +35,7 @@ export const Header1 = (props: Header1Props) => {
   return (
     <section
       id="relume"
-      className="px-[5%] py-20 md:py-32 lg:py-40 bg-gradient-to-br from-slate-50 to-slate-100 relative overflow-hidden"
+      className="px-[5%] py-20 md:py-28 lg:py-32 bg-gradient-to-br from-slate-50 to-slate-100 relative overflow-hidden"
     >
       {/* Background Academic Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
@@ -47,7 +47,7 @@ export const Header1 = (props: Header1Props) => {
         />
       </div>
       <div className="container max-w-7xl">
-        <div className="grid grid-cols-1 gap-x-24 gap-y-16 md:gap-y-20 lg:grid-cols-2 lg:items-center">
+        <div className="grid grid-cols-1 gap-x-24 gap-y-16 md:gap-y-20 lg:grid-cols-2 lg:items-center lg:min-h-[60vh]">
           <div className="space-y-8 relative z-10">
             {/* Enhanced Header with Subtitle */}
             <div className="space-y-3">
