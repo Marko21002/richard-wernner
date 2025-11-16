@@ -5,6 +5,7 @@ import { Button, useMediaQuery } from "@relume_io/relume-ui";
 import type { ButtonProps } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { RxChevronDown } from "react-icons/rx";
+import { useRouter } from "next/navigation";
 
 type ImageProps = {
   url?: string;
@@ -16,6 +17,12 @@ type NavLink = {
   url: string;
   title: string;
   subMenuLinks?: NavLink[];
+};
+
+type AuthUser = {
+  id: number;
+  email: string;
+  name: string | null;
 };
 
 type Props = {
@@ -33,8 +40,12 @@ export const Navbar2 = (props: Navbar2Props) => {
     ...props,
   };
 
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useMediaQuery("(max-width: 991px)");
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [logoutLoading, setLogoutLoading] = useState(false);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -49,6 +60,39 @@ export const Navbar2 = (props: Navbar2Props) => {
       document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen, isMobile]);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = (await res.json()) as { user: AuthUser | null };
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch {
+        setUser(null);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  const handleLogout = async () => {
+    setLogoutLoading(true);
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      setUser(null);
+      router.push("/");
+    } catch {
+      // ignore
+    } finally {
+      setLogoutLoading(false);
+    }
+  };
 
   return (
     <section
@@ -68,17 +112,43 @@ export const Navbar2 = (props: Navbar2Props) => {
             )}
           </a>
           <div className="flex items-center gap-4 lg:hidden">
-            <div>
-              {buttons.map((button, index) => (
-                <Button
-                  key={index}
-                  className="w-full px-4 py-1 bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition-all duration-200"
-                  {...button}
-                >
-                  {button.title}
-                </Button>
-              ))}
-            </div>
+            {!authLoading && (
+              <div className="flex items-center gap-2">
+                {user ? (
+                  <>
+                    <Button
+                      className="px-3 py-1 bg-slate-800 text-white text-xs font-medium hover:bg-slate-700 transition-all duration-200"
+                      onClick={() => router.push("/course/lms")}
+                    >
+                      Go to course
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      className="px-3 py-1 border border-slate-300 bg-white text-xs text-slate-800 hover:bg-slate-50 transition-all duration-200"
+                      onClick={handleLogout}
+                    >
+                      {logoutLoading ? "Signing out..." : "Sign out"}
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="secondary"
+                      className="px-3 py-1 border border-slate-300 bg-white text-xs text-slate-800 hover:bg-slate-50 transition-all duration-200"
+                      onClick={() => router.push("/login")}
+                    >
+                      Log in
+                    </Button>
+                    <Button
+                      className="px-3 py-1 bg-slate-800 text-white text-xs font-medium hover:bg-slate-700 transition-all duration-200"
+                      onClick={() => router.push("/register")}
+                    >
+                      Sign up
+                    </Button>
+                  </>
+                )}
+              </div>
+            )}
             <button
               className="-mr-2 flex size-12 flex-col items-center justify-center"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -136,16 +206,50 @@ export const Navbar2 = (props: Navbar2Props) => {
             )
           )}
         </motion.div>
-        <div className="hidden justify-self-end lg:block">
-          {buttons.map((button, index) => (
-            <Button
-              key={index}
-              className="px-6 py-2 bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition-all duration-200"
-              {...button}
-            >
-              {button.title}
-            </Button>
-          ))}
+        <div className="hidden items-center justify-self-end gap-3 lg:flex">
+          {!authLoading && (
+            <>
+              {user ? (
+                <>
+                  <span className="text-xs text-slate-600">
+                    Signed in as{" "}
+                    <span className="font-medium text-slate-900">
+                      {user.name || user.email}
+                    </span>
+                  </span>
+                  <Button
+                    className="px-5 py-2 bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition-all duration-200"
+                    onClick={() => router.push("/course/lms")}
+                  >
+                    Go to course
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    className="px-4 py-2 border border-slate-300 bg-white text-sm text-slate-800 hover:bg-slate-50 transition-all duration-200"
+                    onClick={handleLogout}
+                  >
+                    {logoutLoading ? "Signing out..." : "Sign out"}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="secondary"
+                    className="px-4 py-2 border border-slate-300 bg-white text-sm text-slate-800 hover:bg-slate-50 transition-all duration-200"
+                    onClick={() => router.push("/login")}
+                  >
+                    Log in
+                  </Button>
+                  <Button
+                    className="px-6 py-2 bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition-all duration-200"
+                    onClick={() => router.push("/register")}
+                  >
+                    Sign up
+                  </Button>
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </section>
