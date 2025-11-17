@@ -11,6 +11,7 @@ type ImageProps = {
   url?: string;
   src: string;
   alt?: string;
+  className?: string;
 };
 
 type NavLink = {
@@ -106,7 +107,11 @@ export const Navbar2 = (props: Navbar2Props) => {
             className="text-slate-900 text-lg font-semibold uppercase tracking-[0.24em] font-serif"
           >
             {logo.src ? (
-              <img src={logo.src} alt={logo.alt} className="max-h-10" />
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                className={logo.className ?? "max-h-10"}
+              />
             ) : (
               "R.W ACADEMY"
             )}
@@ -139,15 +144,15 @@ export const Navbar2 = (props: Navbar2Props) => {
                     >
                       Log in
                     </Button>
-                    <Button
+                <Button
                       className="px-3 py-1 bg-slate-800 text-white text-xs font-medium hover:bg-slate-700 transition-all duration-200"
                       onClick={() => router.push("/register")}
-                    >
+                >
                       Sign up
-                    </Button>
+                </Button>
                   </>
                 )}
-              </div>
+            </div>
             )}
             <button
               className="-mr-2 flex size-12 flex-col items-center justify-center"
@@ -240,12 +245,12 @@ export const Navbar2 = (props: Navbar2Props) => {
                   >
                     Log in
                   </Button>
-                  <Button
-                    className="px-6 py-2 bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition-all duration-200"
+            <Button
+              className="px-6 py-2 bg-slate-800 text-white text-sm font-medium hover:bg-slate-700 transition-all duration-200"
                     onClick={() => router.push("/register")}
-                  >
+            >
                     Sign up
-                  </Button>
+            </Button>
                 </>
               )}
             </>

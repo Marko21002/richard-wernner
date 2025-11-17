@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await registerUser({ email, password, name });
-    createSession(user.id);
+    await createSession(user.id);
 
     return NextResponse.json(
       {

@@ -4,6 +4,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Navbar2 } from "../../components/Navbar2";
 import { Footer } from "../../components/Footer";
 import { CourseDefaults } from "../../components/Course";
@@ -75,6 +76,17 @@ export default function AdminPage() {
               <p className="text-[11px]">
                 ID: <span className="font-mono">{selectedCourseId}</span>
               </p>
+              <div className="pt-3">
+                <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                  Students
+                </p>
+                <Link
+                  href="/course/admin/manage"
+                  className="inline-flex w-full items-center justify-center rounded-sm border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-800 hover:bg-slate-100"
+                >
+                  Manage students
+                </Link>
+              </div>
             </div>
           </aside>
 

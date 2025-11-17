@@ -13,6 +13,7 @@ export function getDb() {
         email TEXT UNIQUE NOT NULL,
         name TEXT,
         password_hash TEXT NOT NULL,
+        has_bought_course INTEGER NOT NULL DEFAULT 0,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )`
     ).run();
@@ -27,9 +28,20 @@ export function getDb() {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       )`
     ).run();
+
+    // Ensure legacy databases also have the has_bought_course column
+    const userColumns = db.prepare("PRAGMA table_info(users)").all() as {
+      name: string;
+    }[];
+    const hasBoughtCourseColumn = userColumns.find(
+      (col) => col.name === "has_bought_course"
+    );
+    if (!hasBoughtCourseColumn) {
+      db.prepare(
+        "ALTER TABLE users ADD COLUMN has_bought_course INTEGER NOT NULL DEFAULT 0"
+      ).run();
+    }
   }
 
   return db;
 }
-
-

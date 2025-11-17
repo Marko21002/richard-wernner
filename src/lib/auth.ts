@@ -70,7 +70,7 @@ export async function verifyUser(email: string, password: string) {
   } satisfies User;
 }
 
-export function createSession(userId: number) {
+export async function createSession(userId: number) {
   const db = getDb();
   const token = randomBytes(32).toString("hex");
   const expires = new Date();
@@ -80,7 +80,7 @@ export function createSession(userId: number) {
     "INSERT INTO sessions (user_id, session_token, expires_at) VALUES (?, ?, ?)"
   ).run(userId, token, expires.toISOString());
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
@@ -92,13 +92,13 @@ export function createSession(userId: number) {
   return token;
 }
 
-export function clearSessionCookie() {
-  const cookieStore = cookies();
+export async function clearSessionCookie() {
+  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
-export function getCurrentUser(): User | null {
-  const cookieStore = cookies();
+export async function getCurrentUser(): Promise<User | null> {
+  const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!token) return null;
 
