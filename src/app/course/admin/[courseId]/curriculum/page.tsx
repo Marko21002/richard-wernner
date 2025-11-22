@@ -1,5 +1,6 @@
 "use client";
 
+import { use } from "react";
 import Link from "next/link";
 import { Footer } from "../../../../components/Footer";
 import { CourseDefaults } from "../../../../components/Course";
@@ -7,13 +8,14 @@ import { Button } from "@relume_io/relume-ui";
 import AdminNavbar from "../../../components/admin-navbar";
 import CourseAdminSidebar from "../../../components/course-admin-sidebar";
 type Props = {
-  params: {
+  params: Promise<{
     courseId: string;
-  };
+  }>;
 };
 
 export default function AdminCurriculumPage({ params }: Props) {
-  const courseId = params.courseId || "banking-masterclass";
+  const { courseId } = use(params);
+  const finalCourseId = courseId || "banking-masterclass";
   const courseTitle = CourseDefaults.heading;
 
   return (
@@ -43,13 +45,13 @@ export default function AdminCurriculumPage({ params }: Props) {
               </div>
               <div className="flex flex-wrap items-center gap-2"></div>
               <p className="text-[11px] text-slate-500">
-                Course ID: <span className="font-mono">{courseId}</span>
+                Course ID: <span className="font-mono">{finalCourseId}</span>
               </p>
             </div>
           </header>
 
           <div className="flex flex-col gap-6 lg:flex-row">
-            <CourseAdminSidebar courseId={courseId} />
+            <CourseAdminSidebar courseId={finalCourseId} />
 
             <div className="flex-1">
               <section className="grid gap-6 lg:grid-cols-[2.1fr,1.1fr]">
@@ -109,7 +111,7 @@ export default function AdminCurriculumPage({ params }: Props) {
                           {module.lectures.map((lecture, lectureIndex) => (
                             <Link
                               key={lecture.title + lectureIndex}
-                              href={`/course/admin/${courseId}/lessons/${moduleIndex}/${lectureIndex}`}
+                              href={`/course/admin/${finalCourseId}/lessons/${moduleIndex}/${lectureIndex}`}
                               className="flex items-center justify-between gap-3 rounded-sm border border-slate-100 bg-slate-50 px-3 py-2 text-xs text-slate-700 hover:border-slate-300 hover:bg-slate-100"
                             >
                               <div className="space-y-0.5">
@@ -190,7 +192,7 @@ export default function AdminCurriculumPage({ params }: Props) {
           <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] text-slate-500">
             <div className="flex items-center gap-2">
               <Link
-                href={`/course/admin/${courseId}/edit`}
+                href={`/course/admin/${finalCourseId}/edit`}
                 className="text-[11px] font-medium text-slate-800 underline underline-offset-2 hover:text-slate-600"
               >
                 Back to setup guide

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useRef, useEffect, use } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Footer } from "../../../../components/Footer";
 import { CourseDefaults } from "../../../../components/Course";
@@ -8,14 +10,96 @@ import AdminNavbar from "../../../components/admin-navbar";
 import CourseAdminSidebar from "../../../components/course-admin-sidebar";
 
 type Props = {
-  params: {
+  params: Promise<{
     courseId: string;
-  };
+  }>;
 };
 
 export default function AdminEditCoursePage({ params }: Props) {
-  const courseId = params.courseId || "banking-masterclass";
+  const { courseId } = use(params);
+  const finalCourseId = courseId || "banking-masterclass";
   const courseTitle = CourseDefaults.heading;
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      setUploadError("Please select an image file");
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError("File size must be less than 10MB");
+      return;
+    }
+
+    setIsUploading(true);
+    setUploadError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch(`/api/course/${finalCourseId}/thumbnail`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to upload image");
+      }
+
+      const data = await response.json();
+      console.log("[Upload] Received URL:", data.url);
+      setThumbnailUrl(data.url);
+    } catch (error) {
+      setUploadError(
+        error instanceof Error ? error.message : "Failed to upload image"
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Load existing thumbnail on mount
+  useEffect(() => {
+    const loadThumbnail = async () => {
+      try {
+        const response = await fetch(`/api/course/${finalCourseId}/thumbnail`);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("[Load] Thumbnail data:", data);
+          if (data.thumbnailUrl) {
+            console.log("[Load] Setting thumbnail URL:", data.thumbnailUrl);
+            setThumbnailUrl(data.thumbnailUrl);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading thumbnail:", error);
+      }
+    };
+
+    loadThumbnail();
+  }, [finalCourseId]);
+
+  // Debug: Log when thumbnailUrl changes
+  useEffect(() => {
+    if (thumbnailUrl) {
+      console.log("[State] Thumbnail URL changed to:", thumbnailUrl);
+    }
+  }, [thumbnailUrl]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
@@ -42,28 +126,14 @@ export default function AdminEditCoursePage({ params }: Props) {
                   course. This page is UI-only and does not yet persist changes.
                 </p>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Button
-                  variant="secondary"
-                  className="border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-800 hover:bg-slate-50"
-                >
-                  Preview course
-                </Button>
-                <Button
-                  variant="primary"
-                  className="border border-emerald-600/10 bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-500"
-                >
-                  Publish (UI only)
-                </Button>
-              </div>
               <p className="text-[11px] text-slate-500">
-                Course ID: <span className="font-mono">{courseId}</span>
+                Course ID: <span className="font-mono">{finalCourseId}</span>
               </p>
             </div>
           </header>
 
           <div className="flex flex-col gap-6 lg:flex-row">
-            <CourseAdminSidebar courseId={courseId} />
+            <CourseAdminSidebar courseId={finalCourseId} />
 
             <div className="flex-1">
               <div className="space-y-6">
@@ -94,14 +164,60 @@ export default function AdminEditCoursePage({ params }: Props) {
                       <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
                         Thumbnail
                       </p>
-                      <button className="text-[11px] font-medium text-slate-800 underline underline-offset-2 hover:text-slate-600">
-                        Edit image
+                      <button
+                        onClick={handleUploadClick}
+                        disabled={isUploading}
+                        className="text-[11px] font-medium text-slate-800 underline underline-offset-2 hover:text-slate-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isUploading ? "Uploading..." : "Edit image"}
                       </button>
                     </div>
-                    <div className="h-32 w-full overflow-hidden rounded-sm border border-slate-200 bg-slate-100" />
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                    />
+                    <div className="relative h-32 w-full overflow-hidden rounded-sm border border-slate-200 bg-slate-100">
+                      {thumbnailUrl ? (
+                        <img
+                          src={thumbnailUrl}
+                          alt="Course thumbnail"
+                          className="h-full w-full object-cover"
+                          onError={(e) => {
+                            console.error(
+                              "[Image] Error loading:",
+                              thumbnailUrl,
+                              e
+                            );
+                            console.error("[Image] Error event:", e);
+                          }}
+                          onLoad={() => {
+                            console.log(
+                              "[Image] Successfully loaded:",
+                              thumbnailUrl
+                            );
+                          }}
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xs text-slate-400">
+                          No thumbnail uploaded
+                        </div>
+                      )}
+                      {isUploading && (
+                        <div className="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/50">
+                          <div className="text-xs text-white">Uploading...</div>
+                        </div>
+                      )}
+                    </div>
+                    {uploadError && (
+                      <p className="text-[11px] text-red-600">{uploadError}</p>
+                    )}
                     <p className="text-[11px] text-slate-500">
                       This image will appear in the catalog, checkout and
-                      student dashboard. Image upload is UI-only for now.
+                      student dashboard. Recommended size: 1280x720px (16:9
+                      aspect ratio).
                     </p>
                   </section>
                 </section>
@@ -125,7 +241,7 @@ export default function AdminEditCoursePage({ params }: Props) {
                         Preview curriculum
                       </Button>
                       <Link
-                        href={`/course/admin/${courseId}/curriculum`}
+                        href={`/course/admin/${finalCourseId}/curriculum`}
                         className="inline-flex items-center rounded-sm border border-slate-900/10 bg-slate-900 px-3 py-1.5 text-[11px] font-medium text-white hover:bg-slate-800"
                       >
                         Edit curriculum

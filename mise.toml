@@ -1,0 +1,13 @@
+[tools]
+bun = "latest"
+aws = "latest"
+
+[tools."github:versity/versitygw"]
+version = "latest"
+
+[env]
+_.file = ".env.local"
+
+[tasks.s3]
+description = "Run versitygw to upload files to S3"
+run = "versitygw --port :10000 posix /Users/markogufman/Desktop/richard/data"

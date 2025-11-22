@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { CourseDefaults } from "@/app/components/Course";
 import { RxCheck, RxChevronRight, RxLockClosed, RxPlay } from "react-icons/rx";
 
@@ -27,6 +27,27 @@ type LectureResources = {
   readings?: LectureResourceItem[];
 };
 
+type UploadedFile = {
+  url: string;
+  fileName: string;
+  fileSize: number;
+  contentType: string;
+  key: string;
+};
+
+const getFileType = (contentType: string, fileName: string): LectureResourceItem["type"] => {
+  if (contentType.includes("pdf") || fileName.toLowerCase().endsWith(".pdf")) {
+    return "pdf";
+  }
+  if (contentType.includes("presentation") || fileName.toLowerCase().includes("slide")) {
+    return "slides";
+  }
+  if (contentType.includes("spreadsheet") || fileName.toLowerCase().endsWith(".xls") || fileName.toLowerCase().endsWith(".xlsx") || fileName.toLowerCase().endsWith(".csv")) {
+    return "dataset";
+  }
+  return "link";
+};
+
 const getResourceTypeLabel = (type: LectureResourceItem["type"]): string => {
   switch (type) {
     case "slides":
@@ -46,33 +67,7 @@ const getResourceTypeLabel = (type: LectureResourceItem["type"]): string => {
   }
 };
 
-// Basic example resources – can be extended per lecture key (moduleIndex-lectureIndex).
-const lectureResources: Record<string, LectureResources> = {
-  "0-0": {
-    summary:
-      "Overview slide deck and a short reading that contrasts textbook banking with empirical evidence.",
-    files: [
-      {
-        label: "Lecture 1 – Introduction to Banking Systems (PDF slides)",
-        type: "slides",
-        href: "#",
-      },
-      {
-        label: "Course syllabus & structure (PDF)",
-        type: "pdf",
-        href: "#",
-      },
-    ],
-    readings: [
-      {
-        label:
-          "Werner (2014) – Can banks individually create money out of nothing?",
-        type: "paper",
-        href: "#",
-      },
-    ],
-  },
-};
+const COURSE_ID = "banking-masterclass";
 
 export const LMS = () => {
   const modules = CourseDefaults.modules;
@@ -97,6 +92,9 @@ export const LMS = () => {
   const [completedLectures, setCompletedLectures] = useState<Set<string>>(
     () => new Set()
   );
+  const [lessonContent, setLessonContent] = useState<string | null>(null);
+  const [lessonFiles, setLessonFiles] = useState<UploadedFile[]>([]);
+  const [loadingLesson, setLoadingLesson] = useState(false);
 
   const selectedModule: Module = modules[selectedLecture.moduleIndex];
   const currentLecture: Lecture =
@@ -104,7 +102,51 @@ export const LMS = () => {
 
   const currentKey = getLectureKey(selectedLecture);
   const isCurrentCompleted = completedLectures.has(currentKey);
-  const currentResources = lectureResources[currentKey];
+
+  // Fetch lesson data from database
+  useEffect(() => {
+    const fetchLesson = async () => {
+      setLoadingLesson(true);
+      try {
+        const url = `/api/lesson/${COURSE_ID}/${selectedLecture.moduleIndex}/${selectedLecture.lectureIndex}`;
+        console.log("Fetching lesson from:", url);
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Fetched lesson data:", data);
+          setLessonContent(data.content || null);
+          setLessonFiles(data.files || []);
+        } else {
+          console.error("Failed to fetch lesson:", response.status, response.statusText);
+          setLessonContent(null);
+          setLessonFiles([]);
+        }
+      } catch (error) {
+        console.error("Error fetching lesson:", error);
+        setLessonContent(null);
+        setLessonFiles([]);
+      } finally {
+        setLoadingLesson(false);
+      }
+    };
+
+    fetchLesson();
+  }, [selectedLecture.moduleIndex, selectedLecture.lectureIndex]);
+
+  // Convert uploaded files to lecture resources format
+  const currentResources: LectureResources | null = useMemo(() => {
+    if (lessonFiles.length === 0) {
+      return null;
+    }
+
+    return {
+      files: lessonFiles.map((file) => ({
+        label: file.fileName,
+        type: getFileType(file.contentType, file.fileName),
+        href: file.url,
+      })),
+    };
+  }, [lessonFiles]);
 
   const remainingLectures = Math.max(0, totalLectures - completedLectures.size);
 
@@ -251,7 +293,16 @@ export const LMS = () => {
                 <h4 className="mb-1 text-base font-semibold text-slate-900">
                   {currentLecture.title}
                 </h4>
-                <p>{currentLecture.description}</p>
+                {loadingLesson ? (
+                  <p className="text-sm text-slate-500">Loading content...</p>
+                ) : lessonContent && lessonContent.trim() !== "" ? (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: lessonContent }}
+                    className="prose prose-sm max-w-none [&_h1]:text-lg [&_h1]:font-bold [&_h1]:mb-2 [&_h1]:mt-3 [&_h2]:text-base [&_h2]:font-bold [&_h2]:mb-2 [&_h2]:mt-2 [&_h3]:text-sm [&_h3]:font-bold [&_h3]:mb-1 [&_h3]:mt-2 [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:ml-4 [&_ul]:mb-2 [&_ol]:list-decimal [&_ol]:ml-4 [&_ol]:mb-2 [&_li]:mb-1 [&_a]:text-emerald-600 [&_a]:underline [&_a:hover]:text-emerald-700 [&_img]:max-w-full [&_img]:rounded [&_img]:my-2 [&_iframe]:max-w-full [&_iframe]:rounded [&_iframe]:my-2"
+                  />
+                ) : (
+                  <p>{currentLecture.description}</p>
+                )}
               </div>
             </section>
 
