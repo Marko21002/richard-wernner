@@ -5,9 +5,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Navbar2 } from "../../components/Navbar2";
 import { Footer } from "../../components/Footer";
 import { CourseDefaults } from "../../components/Course";
+import AdminNavbar from "../components/admin-navbar";
 import { Button } from "@relume_io/relume-ui";
 import {
   RxPlus,
@@ -18,15 +18,15 @@ import {
   RxCross2,
 } from "react-icons/rx";
 
-type TabKey = "overview" | "edit" | "create";
+type TabKey = "school" | "courses" | "products";
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState<TabKey>("overview");
+  const [activeTab, setActiveTab] = useState<TabKey>("school");
   const [selectedCourseId] = useState("banking-masterclass");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-      <Navbar2 />
+      <AdminNavbar />
 
       <main className="px-[5%] py-10 md:py-12 lg:py-16">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 lg:flex-row">
@@ -37,64 +37,79 @@ export default function AdminPage() {
                 Admin
               </p>
               <h1 className="text-xl font-light text-slate-900 font-serif">
-                Course Manager
+                Werner Finance Academy
               </h1>
               <p className="text-xs text-slate-500">
-                Manage Professor Werner&apos;s online courses, content and
-                materials.
+                High-level control panel for the school, courses, products and
+                students.
               </p>
             </div>
 
-            <nav className="space-y-1 text-sm">
-              <SidebarButton
-                label="Overview"
-                description="Snapshot of courses and content"
-                active={activeTab === "overview"}
-                onClick={() => setActiveTab("overview")}
-              />
-              <SidebarButton
-                label="Edit course"
-                description="Update content & modules"
-                active={activeTab === "edit"}
-                onClick={() => setActiveTab("edit")}
-              />
-              <SidebarButton
-                label="Create new course"
-                description="Draft a new course"
-                active={activeTab === "create"}
-                onClick={() => setActiveTab("create")}
-              />
-            </nav>
-
-            <div className="mt-6 border-t border-slate-200 pt-4 text-xs text-slate-500 space-y-1">
-              <p className="font-medium text-slate-600">
-                Current course selected
-              </p>
-              <p className="text-slate-700">
-                Banking &amp; Finance Masterclass
-              </p>
-              <p className="text-[11px]">
-                ID: <span className="font-mono">{selectedCourseId}</span>
-              </p>
-              <div className="pt-3">
-                <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
-                  Students
+            <nav className="space-y-3 text-sm">
+              <div className="space-y-1">
+                <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                  School
                 </p>
-                <Link
-                  href="/course/admin/manage"
-                  className="inline-flex w-full items-center justify-center rounded-sm border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-800 hover:bg-slate-100"
-                >
-                  Manage students
-                </Link>
+                <SidebarButton
+                  label="School overview"
+                  description="General metrics & school profile"
+                  active={activeTab === "school"}
+                  onClick={() => setActiveTab("school")}
+                />
               </div>
-            </div>
+
+              <div className="space-y-1 border-t border-slate-200 pt-3">
+                <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                  Courses
+                </p>
+                <SidebarButton
+                  label="Courses overview"
+                  description="Snapshot of all programmes"
+                  active={activeTab === "courses"}
+                  onClick={() => setActiveTab("courses")}
+                />
+              </div>
+
+              <div className="space-y-1 border-t border-slate-200 pt-3">
+                <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                  Products
+                </p>
+                <SidebarButton
+                  label="Digital products"
+                  description="Workbooks, bundles & extras"
+                  active={activeTab === "products"}
+                  onClick={() => setActiveTab("products")}
+                />
+              </div>
+
+              <div className="space-y-2 border-t border-slate-200 pt-3 text-xs text-slate-500">
+                <p className="font-medium text-slate-600">Current course</p>
+                <p className="text-slate-700">
+                  Banking &amp; Finance Masterclass
+                </p>
+                <p className="text-[11px]">
+                  ID: <span className="font-mono">{selectedCourseId}</span>
+                </p>
+                <div className="pt-2">
+                  <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+                    All students
+                  </p>
+                  <Link
+                    href="/course/admin/manage"
+                    className="inline-flex w-full items-center justify-center rounded-sm border border-slate-300 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-800 hover:bg-slate-100"
+                  >
+                    Open student list
+                  </Link>
+                </div>
+              </div>
+            </nav>
           </aside>
 
           {/* Main content */}
           <section className="flex-1 space-y-6">
-            {activeTab === "overview" && <OverviewPanel />}
-            {activeTab === "edit" && <EditCoursePanel />}
-            {activeTab === "create" && <CreateCoursePanel />}
+            {activeTab === "school" && <SchoolOverviewPanel />}
+            {activeTab === "courses" && <CoursesOverviewPanel />}
+            {activeTab === "products" && <ProductsPanel />}
           </section>
         </div>
       </main>
@@ -133,12 +148,159 @@ const SidebarButton = ({
   </button>
 );
 
-const OverviewPanel = () => {
+const SchoolOverviewPanel = () => {
   return (
     <div className="space-y-6">
       <header className="space-y-2">
         <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
-          Overview
+          School overview
+        </p>
+        <h2 className="text-2xl font-light text-slate-900 font-serif">
+          Werner Finance Academy at a glance
+        </h2>
+        <p className="max-w-2xl text-sm text-slate-600">
+          High-level summary of the school: reach, activity and commercial
+          performance. This is a static UI preview – no live data is being
+          changed.
+        </p>
+      </header>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <StatCard
+          label="Enrolled students"
+          value="1,250"
+          helper="Across all programmes (sample data)"
+        />
+        <StatCard
+          label="Active courses"
+          value="1"
+          helper="Banking & Finance Masterclass live"
+        />
+        <StatCard
+          label="Annual revenue run rate"
+          value="$420K"
+          helper="Based on current pricing & volume (sample)"
+        />
+      </div>
+
+      <div className="rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="mb-3 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+              School profile
+            </p>
+            <p className="text-sm text-slate-600">
+              Core information that appears across the LMS, public website and
+              student communication.
+            </p>
+          </div>
+          <Button
+            variant="secondary"
+            className="flex items-center gap-2 border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-800 hover:bg-slate-100"
+          >
+            Review branding & copy (UI only)
+          </Button>
+        </div>
+
+        <dl className="grid gap-4 md:grid-cols-2 text-xs text-slate-600">
+          <div className="space-y-1">
+            <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+              School name
+            </dt>
+            <dd className="text-sm font-medium text-slate-900">
+              Werner Finance Academy
+            </dd>
+          </div>
+          <div className="space-y-1">
+            <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+              Primary instructor
+            </dt>
+            <dd className="text-sm font-medium text-slate-900">
+              Professor Richard A. Werner
+            </dd>
+          </div>
+          <div className="space-y-1">
+            <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+              Support email
+            </dt>
+            <dd>
+              <a
+                href="mailto:support@wernerfinance.academy"
+                className="font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
+              >
+                support@wernerfinance.academy
+              </a>
+            </dd>
+          </div>
+          <div className="space-y-1">
+            <dt className="text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+              Default time zone
+            </dt>
+            <dd className="text-sm font-medium text-slate-900">
+              Europe/London (sample)
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="space-y-2 rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+            Communications
+          </p>
+          <p className="text-sm text-slate-700">
+            Control the high-level messaging that appears in onboarding emails,
+            receipts and student dashboard welcome copy.
+          </p>
+          <p className="text-[11px] text-slate-500">
+            In a future version, this section will let you edit default email
+            templates and announcements for all courses.
+          </p>
+        </div>
+        <div className="space-y-2 rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+            Compliance & policies
+          </p>
+          <p className="text-sm text-slate-700">
+            Track the links to your terms, privacy policy and refund policy that
+            are surfaced to students.
+          </p>
+          <p className="text-[11px] text-slate-500">
+            This is UI only – hook this up to your legal pages and consent
+            tracking in production.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const StatCard = ({
+  label,
+  value,
+  helper,
+}: {
+  label: string;
+  value: string;
+  helper: string;
+}) => (
+  <div className="rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
+    <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+      {label}
+    </p>
+    <p className="mt-2 text-2xl font-light text-slate-900 font-serif">
+      {value}
+    </p>
+    <p className="mt-1 text-xs text-slate-500">{helper}</p>
+  </div>
+);
+
+const CoursesOverviewPanel = () => {
+  return (
+    <div className="space-y-6">
+      <header className="space-y-2">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+          Courses overview
         </p>
         <h2 className="text-2xl font-light text-slate-900 font-serif">
           Courses at a glance
@@ -167,14 +329,14 @@ const OverviewPanel = () => {
         />
       </div>
 
-      <div className="rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
-        <div className="mb-3 flex items-center justify-between gap-2">
+      <div className="space-y-4 rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
               Courses
             </p>
             <p className="text-sm text-slate-600">
-              Manage individual course cards below.
+              Create and manage courses in your school.
             </p>
           </div>
           <Button
@@ -186,6 +348,127 @@ const OverviewPanel = () => {
           </Button>
         </div>
 
+        {/* Top controls, similar to Teachable: filter, search, sort */}
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-1.5 text-[11px] font-medium text-slate-800 hover:bg-slate-100"
+            >
+              Filter
+            </button>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search for courses"
+                className="w-56 rounded-sm border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900/10"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-1.5 text-[11px] font-medium text-slate-800 hover:bg-slate-100"
+            >
+              Catalog order
+            </button>
+            <button
+              type="button"
+              className="inline-flex items-center gap-1 rounded-sm border border-slate-300 bg-slate-50 px-3 py-1.5 text-[11px] font-medium text-slate-800 hover:bg-slate-100"
+            >
+              Status
+            </button>
+          </div>
+        </div>
+
+        {/* Courses table, inspired by the Teachable screenshot */}
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse text-left text-xs text-slate-700">
+            <thead>
+              <tr className="border-b border-slate-200 bg-slate-50 text-[11px] uppercase tracking-[0.16em] text-slate-500">
+                <th className="px-3 py-2 font-medium">Thumbnail</th>
+                <th className="px-3 py-2 font-medium">Name</th>
+                <th className="px-3 py-2 font-medium">Author</th>
+                <th className="px-3 py-2 font-medium">Creation date</th>
+                <th className="px-3 py-2 font-medium">Sales</th>
+                <th className="px-3 py-2 font-medium">Enrollments</th>
+                <th className="px-3 py-2 font-medium">Status</th>
+                <th className="px-3 py-2 font-medium text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-slate-100 last:border-b-0">
+                <td className="px-3 py-2">
+                  <div className="h-12 w-20 overflow-hidden rounded-sm border border-slate-200 bg-slate-100" />
+                </td>
+                <td className="px-3 py-2 text-xs text-slate-900">
+                  <Link
+                    href="/course/admin/banking-masterclass/edit"
+                    className="text-xs font-medium text-slate-900 underline underline-offset-2 hover:text-slate-700"
+                  >
+                    {CourseDefaults.heading}
+                  </Link>
+                </td>
+                <td className="px-3 py-2 text-xs text-slate-700">
+                  Professor Richard A. Werner
+                </td>
+                <td className="px-3 py-2 text-[11px] text-slate-500">
+                  11 Nov 25
+                </td>
+                <td className="px-3 py-2 text-[11px] text-slate-600">$0.00</td>
+                <td className="px-3 py-2 text-[11px] text-slate-600">0</td>
+                <td className="px-3 py-2 text-[11px]">
+                  <span className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-700">
+                    Unpublished
+                  </span>
+                </td>
+                <td className="px-3 py-2 text-right text-[11px]">
+                  <div className="inline-flex items-center gap-2">
+                    <Link
+                      href="/course/admin/banking-masterclass/edit"
+                      className="rounded-sm border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-medium text-slate-800 hover:bg-slate-100"
+                    >
+                      Edit course
+                    </Link>
+                    <Link
+                      href="/course/admin/banking-masterclass/curriculum"
+                      className="rounded-sm border border-slate-200 bg-white px-2 py-1 text-[11px] font-medium text-slate-700 hover:bg-slate-50"
+                    >
+                      Curriculum
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="flex flex-col items-start justify-between gap-2 pt-2 text-[11px] text-slate-500 md:flex-row md:items-center">
+          <p>
+            0 / 0 products published ·{" "}
+            <span className="cursor-default underline-offset-2 hover:underline">
+              Upgrade
+            </span>
+          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
+              <span>Results per page</span>
+              <select className="rounded-sm border border-slate-300 bg-white px-1.5 py-0.5 text-[11px] text-slate-800 outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900/10">
+                <option>20</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+            <p>Showing 1–1 of 1</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Optional: keep card preview section as a marketing-style overview */}
+      <div className="rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+          Course card preview
+        </p>
         <div className="grid gap-3 md:grid-cols-2">
           <CourseAdminCard />
           <PlaceholderCourseCard />
@@ -194,26 +477,6 @@ const OverviewPanel = () => {
     </div>
   );
 };
-
-const StatCard = ({
-  label,
-  value,
-  helper,
-}: {
-  label: string;
-  value: string;
-  helper: string;
-}) => (
-  <div className="rounded-sm border border-slate-200 bg-white p-4 shadow-sm">
-    <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
-      {label}
-    </p>
-    <p className="mt-2 text-2xl font-light text-slate-900 font-serif">
-      {value}
-    </p>
-    <p className="mt-1 text-xs text-slate-500">{helper}</p>
-  </div>
-);
 
 const CourseAdminCard = () => {
   return (
@@ -451,6 +714,40 @@ const Field = ({
 const RxLockIcon = () => (
   <span className="inline-block h-3 w-3 rounded-[2px] border border-amber-500 bg-amber-100" />
 );
+
+const ProductsPanel = () => {
+  return (
+    <div className="space-y-6">
+      <header className="space-y-2">
+        <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
+          Digital products (coming soon)
+        </p>
+        <h2 className="text-2xl font-light text-slate-900 font-serif">
+          Workbooks, bundles &amp; add-ons
+        </h2>
+        <p className="max-w-2xl text-sm text-slate-600">
+          This section will eventually let you attach workbooks, Q&amp;A
+          replays and other extras to your courses. For now it&apos;s a visual
+          preview and not part of the core admin workflow.
+        </p>
+      </header>
+
+      <div className="rounded-sm border border-dashed border-slate-300 bg-slate-50 p-4 text-xs text-slate-600">
+        <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.16em] text-slate-500">
+          Roadmap
+        </p>
+        <p>
+          In a future release, this area will power digital add-ons that plug
+          into your checkout and LMS. For now, focus on your{" "}
+          <span className="font-medium text-slate-900">
+            school overview and courses
+          </span>{" "}
+          tabs above.
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const CreateCoursePanel = () => {
   return (

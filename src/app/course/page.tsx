@@ -10,9 +10,34 @@ export default function CoursePage() {
   return (
     <div>
       <CourseNavbar />
-      <Hero />
-      <Course2 />
-      <Course />
+      <Hero
+        buttons={[
+          {
+            title: "Enroll now",
+            variant: "primary",
+            href: "https://buy.polar.sh/polar_cl_zPyR4fHIjxLukXVA8Q4vUz7yFrBpoNnFGNB8z1DtA6Q",
+          },
+          {
+            title: "View full curriculum",
+            variant: "secondary",
+            href: "#course",
+          },
+        ]}
+      />
+      <Course
+        buttons={[
+          {
+            title: "Enroll in the masterclass",
+            variant: "primary",
+            href: "https://buy.polar.sh/polar_cl_zPyR4fHIjxLukXVA8Q4vUz7yFrBpoNnFGNB8z1DtA6Q",
+          },
+          {
+            title: "Already enrolled? Log in",
+            variant: "secondary",
+            href: "/login",
+          },
+        ]}
+      />
       <Faq />
       <Footer />
     </div>

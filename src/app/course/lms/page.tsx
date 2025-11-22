@@ -6,22 +6,28 @@ import CourseNavbar from "../components/navbar";
 
 export default async function LMSPage() {
   const user = await getCurrentUser();
-  const hasAccess = !!user; // for now: any signed-in user can view the course
+  // TODO: Wire this to a real `has_bought_course` flag once backend is ready.
+  const accessState: "guest" | "no-access" | "enrolled" = user
+    ? "enrolled"
+    : "guest";
 
   return (
     <div className="">
       <CourseNavbar />
-      {hasAccess ? (
+      {accessState === "enrolled" ? (
         <LMS />
       ) : (
         <section className="bg-slate-50 px-[5%] py-20">
           <div className="mx-auto max-w-xl rounded-sm border border-slate-200 bg-white p-6 text-center shadow-sm">
             <h1 className="mb-3 text-2xl font-light text-slate-900 font-serif">
-              Unlock this course
+              {accessState === "guest"
+                ? "Unlock this course"
+                : "This course isn&apos;t unlocked yet"}
             </h1>
             <p className="mb-6 text-sm text-slate-600">
-              You need an account and an active purchase to access Professor
-              Werner&apos;s Banking &amp; Finance Masterclass.
+              {accessState === "guest"
+                ? "Create an account or log in with the email you used at checkout to watch Professor Werner&apos;s Banking & Finance Masterclass."
+                : "Hi there, your account is set up but this course is not yet linked to your email. Complete your purchase or contact support if you think this is a mistake."}
             </p>
             <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <Link

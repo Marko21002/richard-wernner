@@ -92,9 +92,6 @@ export const Hero = ({
                 ))}
               </div>
               <p className="text-sm text-slate-500 italic">{resolvedNote}</p>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
-                {resolvedTrustLine}
-              </p>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
-import { Navbar2 } from "../../../components/Navbar2";
 import { Footer } from "../../../components/Footer";
 import { getDb } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import AdminNavbar from "../../components/admin-navbar";
 
 async function addUser(formData: FormData) {
   "use server";
@@ -59,19 +59,20 @@ export default async function AdminManageUsersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-      <Navbar2 />
+      <AdminNavbar />
       <main className="px-[5%] py-10 md:py-14">
         <div className="mx-auto max-w-6xl space-y-8">
           <header className="space-y-2">
             <p className="text-xs font-medium uppercase tracking-[0.16em] text-slate-500">
-              Admin
+              Admin / Students
             </p>
             <h1 className="text-2xl font-light text-slate-900 font-serif md:text-3xl">
-              Manage students
+              All students
             </h1>
             <p className="max-w-2xl text-sm text-slate-600">
-              View all registered students, add new accounts manually, and
-              remove access if needed.
+              View every registered student in your academy, add new accounts
+              manually, and remove access if needed. For now all students belong
+              to the Banking &amp; Finance Masterclass course.
             </p>
           </header>
 

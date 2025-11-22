@@ -239,3 +239,4 @@ export const Course2Defaults: Props = {
 
 export default Course2;
 
+
